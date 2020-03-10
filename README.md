@@ -6,7 +6,7 @@ A simple shopping cart API using MongoDB, Express and NodeJs
 
 You need to have installed Node and NPM.
 
-#### Clone the repo
+### Clone the repo
 
 ```bash
 $ git clone https://github.com/uidoyen/node-express-shopping-cart-api.git
