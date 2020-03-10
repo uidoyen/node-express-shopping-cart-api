@@ -21,7 +21,7 @@ router.get("/about", function (req, res, next) {
 router.use("/user", usersRoutes);
 router.use(
   "/products",
-  passport.authenticate('jwt', { session: false }),
+  // passport.authenticate('jwt', { session: false }),
   productsRoutes
 );
 router.use(
