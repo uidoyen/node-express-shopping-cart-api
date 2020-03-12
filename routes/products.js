@@ -6,6 +6,13 @@ const paramValidation = require('../config/param-validation');
 const ProductController = require('../controllers/ProductController');
 const passport = require("passport");
 
+
+router
+  .route('/search')
+  /** GET /api/products/search - Search products based on category,brand,name */
+  .get(ProductController.search)
+
+
 router
   .route('/')
   /** GET /api/products - Get list of products */
@@ -47,4 +54,7 @@ router
 
 /** Load user when API with productId route parameter is hit */
 router.param('productId', ProductController.load);
+
+
+
 module.exports = router;

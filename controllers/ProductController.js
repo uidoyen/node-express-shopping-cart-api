@@ -5,7 +5,7 @@ const Product = require('../models/Product');
 /**
  * Load user and append to req.
  */
-exports.load = function(req, res, next, id) {
+exports.load = function (req, res, next, id) {
   Product.get(id)
     .then(product => {
       req.product = product; // eslint-disable-line no-param-reassign
@@ -17,7 +17,7 @@ exports.load = function(req, res, next, id) {
     });
 };
 
-exports.get = function(req, res, next) {
+exports.get = function (req, res, next) {
   return res.json(req.product);
 };
 
@@ -28,7 +28,7 @@ exports.get = function(req, res, next) {
  * @returns {User}
  */
 
-exports.create = function(req, res, next) {
+exports.create = function (req, res, next) {
   console.log(req);
   const productData = {
     name: req.body.name,
@@ -56,7 +56,7 @@ exports.create = function(req, res, next) {
  * @property {string} req.body.mobileNumber - The mobileNumber of user.
  * @returns {User}
  */
-exports.update = function(req, res, next) {
+exports.update = function (req, res, next) {
   const product = req.product;
 
   product.name = req.body.name ? req.body.name : product.name;
@@ -81,7 +81,7 @@ exports.update = function(req, res, next) {
  * @property {number} req.query.limit - Limit number of products to be returned.
  * @returns {Product[]}
  */
-exports.list = function(req, res, next) {
+exports.list = function (req, res, next) {
   console.log(req.query);
   const {
     category = '',
@@ -100,10 +100,27 @@ exports.list = function(req, res, next) {
  * Delete Product.
  * @returns {Product}
  */
-exports.remove = function(req, res, next) {
+exports.remove = function (req, res, next) {
   const product = req.product;
   product
     .remove()
     .then(deletedProduct => res.json(deletedProduct))
     .catch(e => next(e));
 };
+
+/**
+ * Search Products.
+ * @returns {Products}
+ */
+exports.search = function (req, res, next) {
+  const text = req.query.text;
+  Product.find({
+    $or: [
+      { "name": { $regex: ".*" + text + ".*", '$options': 'i' } },
+      { "category": { $regex: ".*" + text + ".*", '$options': 'i' } },
+      { "brand": { $regex: ".*" + text + ".*", '$options': 'i' } }
+    ]
+  })
+    .then(searchResult => res.json(searchResult))
+    .catch(err => next(err))
+}
